@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
 import userService from "../services/userService";
+import Notify from "./Notify";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [notify, setNotify] = useState("");
 
   const handleLogin = (event) => {
     event.preventDefault();
@@ -15,12 +17,24 @@ const Login = () => {
       })
       .then((res) => {
         userService.setUser(res.data);
+      })
+      .catch((err) => {
+        setNotify({ message: "Wrong username or password", color: "red" });
       });
   };
 
   return (
     <div>
       <h1>Login to see blogs</h1>
+
+      {notify && (
+        <Notify
+          message={notify.message}
+          color={notify.color}
+          onClose={() => setNotify("")}
+        />
+      )}
+
       <form onSubmit={handleLogin}>
         <p>
           Username:{" "}
