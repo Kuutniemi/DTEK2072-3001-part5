@@ -9,6 +9,7 @@ const Blogs = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [blogs, setBlogs] = useState([]);
   const [notify, setNotify] = useState(null);
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -27,6 +28,7 @@ const Blogs = () => {
       .addBlog(newBlog)
       .then((res) => {
         // console.log("RES: ", res);
+        setShowForm(false);
         setNotify({
           message: `a new blog ${res.title} by ${res.author} added`,
           color: "green",
@@ -57,24 +59,29 @@ const Blogs = () => {
       )}
 
       {/* Add new blog */}
-      <div>
-        <h2>Add new blog</h2>
-        <form onSubmit={handleAddPost}>
-          <p>
-            title:
-            <input type="text" name="title" />
-          </p>
-          <p>
-            author:
-            <input type="text" name="author" />
-          </p>
-          <p>
-            url:
-            <input type="text" name="url" />
-          </p>
-          <button type="submit">Add new</button>
-        </form>
-      </div>
+      {showForm ? (
+        <div>
+          <h2>Add new blog</h2>
+          <form onSubmit={handleAddPost}>
+            <p>
+              title:
+              <input type="text" name="title" />
+            </p>
+            <p>
+              author:
+              <input type="text" name="author" />
+            </p>
+            <p>
+              url:
+              <input type="text" name="url" />
+            </p>
+            <button type="submit">Add new</button>
+          </form>
+          <button onClick={() => setShowForm(false)}>Cancel</button>
+        </div>
+      ) : (
+        <button onClick={() => setShowForm(true)}>Add new blog</button>
+      )}
 
       {/* Blogs */}
       <div>
