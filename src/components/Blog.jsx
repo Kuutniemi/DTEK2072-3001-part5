@@ -14,6 +14,15 @@ const Blog = ({ blogi }) => {
       });
   };
 
+  const handleDelete = () => {
+    const id = blog.id;
+    window.confirm(`Delete ${blog.title} by ${blog.author}?`);
+    blogService.deleteBlog(id);
+
+    // just for now
+    window.location.reload();
+  };
+
   // normaalisti käytän tailwind tms mut nyt selvittänee tällä
   return (
     <div
@@ -34,9 +43,17 @@ const Blog = ({ blogi }) => {
         }}
       >
         Title: {blog.title}{" "}
-        <button onClick={() => setShowDetails(!showDetails)}>
-          {showDetails ? "hide" : "show"}
-        </button>
+        <div style={{ display: "flex", gap: "10px" }}>
+          <button onClick={() => setShowDetails(!showDetails)}>
+            {showDetails ? "hide" : "show"}
+          </button>
+          <button
+            style={{ backgroundColor: "pink", padding: "5px" }}
+            onClick={handleDelete}
+          >
+            delete
+          </button>
+        </div>
       </div>
       {showDetails && (
         <div>

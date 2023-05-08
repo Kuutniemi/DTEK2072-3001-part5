@@ -19,5 +19,13 @@ const updateBlog = async (id, newBlog) => {
   return request.data;
 };
 
+const deleteBlog = async (id) => {
+  const token = JSON.parse(localStorage.getItem("user")).token;
+  const request = await axios.delete(`${baseUrl}/${id}`, {
+    headers: { Authorization: `bearer ${token}` },
+  });
+  return request.data;
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, addBlog, updateBlog };
+export default { getAll, addBlog, updateBlog, deleteBlog };

@@ -49,9 +49,13 @@ const Blogs = () => {
       {/* Blogs */}
       <div>
         <h2>blogs</h2>
-        {blogs.map((blog) => (
-          <Blog key={blog.id} blogi={blog} />
-        ))}
+
+        {/* Sorting blogs to be in order of likes > likes */}
+        {blogs
+          .sort((a, b) => b.likes - a.likes)
+          .map((blog) => (
+            <Blog key={blog.id} blogi={blog} />
+          ))}
       </div>
     </div>
   );
