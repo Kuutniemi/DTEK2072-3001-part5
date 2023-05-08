@@ -4,6 +4,7 @@ import Blog from "./Blog";
 import blogService from "../services/blogs";
 import userService from "../services/userService";
 import Notify from "./Notify";
+import AddBlog from "./AddBlog";
 
 const Blogs = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -14,31 +15,6 @@ const Blogs = () => {
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
-
-  // Tässä teen kokoeilumielessä eri tavalla formin kuin login form
-  const handleAddPost = (event) => {
-    event.preventDefault();
-    const { title, author, url } = event.target;
-    const newBlog = {
-      title: title.value,
-      author: author.value,
-      url: url.value,
-    };
-    blogService
-      .addBlog(newBlog)
-      .then((res) => {
-        // console.log("RES: ", res);
-        setShowForm(false);
-        setNotify({
-          message: `a new blog ${res.title} by ${res.author} added`,
-          color: "green",
-        });
-        setBlogs(blogs.concat(res));
-      })
-      .catch((err) => {
-        setNotify({ message: "Error, try again later", color: "red" });
-      });
-  };
 
   return (
     <div>
@@ -60,25 +36,12 @@ const Blogs = () => {
 
       {/* Add new blog */}
       {showForm ? (
-        <div>
-          <h2>Add new blog</h2>
-          <form onSubmit={handleAddPost}>
-            <p>
-              title:
-              <input type="text" name="title" />
-            </p>
-            <p>
-              author:
-              <input type="text" name="author" />
-            </p>
-            <p>
-              url:
-              <input type="text" name="url" />
-            </p>
-            <button type="submit">Add new</button>
-          </form>
-          <button onClick={() => setShowForm(false)}>Cancel</button>
-        </div>
+        <AddBlog
+          setBlogs={setBlogs}
+          setNotify={setNotify}
+          setShowForm={setShowForm}
+          blogs={blogs}
+        />
       ) : (
         <button onClick={() => setShowForm(true)}>Add new blog</button>
       )}
