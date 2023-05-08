@@ -35,6 +35,7 @@ const Blog = ({ blog }) => {
             <button onClick={() => console.log("like")}>like</button>
           </p>
           <p>Author: {blog.author}</p>
+          <p>Added by: {blog.user?.name}</p>
         </div>
       )}
     </div>
